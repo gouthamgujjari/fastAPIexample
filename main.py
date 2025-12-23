@@ -12,7 +12,7 @@ Base.metadata.create_all(bind=engine)
 def create_product(product: ProductBase):
     db = SessionLocal()
 
-    new_product = ProductDB(**product.dict())
+    new_product = ProductDB(**product.model_dump())
 
     db.add(new_product)
     db.commit()
@@ -38,7 +38,7 @@ def update_product(product_id: int, product_data: ProductBase):
     product = db.query(ProductDB).filter(ProductDB.id == product_id).first()
 
     if product:
-        for key, value in product_data.dict().items():
+        for key, value in product_data.model_dump().items():
             setattr(product, key, value)
 
         db.commit()
